@@ -1,4 +1,4 @@
-package nl.madebymark.share;
+package ir.smgroup.smslocationnotifier;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
