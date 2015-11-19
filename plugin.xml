@@ -9,7 +9,7 @@ id="ir.smgroup.smslocationnotifier"
     <keywords></keywords>
     
     <js-module src="www/share.js" name="Share">
-        <clobbers target="window.plugins.share" />
+        <clobbers target="window.navigator.share" />
     </js-module>
     
     <!-- android -->
