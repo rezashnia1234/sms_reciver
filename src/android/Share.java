@@ -20,12 +20,12 @@ import android.content.Intent;
             if (action.equals("share"))
             {
                 SmsNotifier.currentContex = this.cordova.getActivity().getApplicationContext();
-                /*String function_name = args.getString(0);
+                String function_name = args.getString(0);
                 String params = args.getString(1);
-                String result = SmsNotifier.exec(function_name,params);*/
+                String result = SmsNotifier.exec(function_name,params);
 
                 Toast.makeText(this.cordova.getActivity().getApplicationContext(), "build test 2", Toast.LENGTH_LONG).show();
-                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,"result"));
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,result));
 
                 return true;
             }
