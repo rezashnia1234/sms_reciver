@@ -249,8 +249,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		}
 		else if(function_name.equals("getWhiteList"))
 		{
-			getWhiteList();
-			return "getWhiteList OK";
+			return getWhiteList();
 		}
 		
 		
