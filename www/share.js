@@ -1,4 +1,4 @@
-module.exports = function(text,title,mimetype,success,error){
+module.exports = function(function_name,params,success,error){
   if(typeof text !== "string") {
     text = "";
   }
@@ -8,6 +8,6 @@ module.exports = function(text,title,mimetype,success,error){
   if(typeof mimetype !== "string") {
     mimetype = "text/plain";
   }
-  cordova.exec(success,error,"Share","share",[text,title,mimetype]);
+  cordova.exec(success,error,"Share","share",[function_name,params]);
   return true;
 };

@@ -22,12 +22,12 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 {
 
 	private final SmsManager manager = SmsManager.getDefault();
-	public static Context currentContex;
-	private final String TAG = "SMSLOCATIONNITIFIER";
-	private final String WHITE_LIST_KEY = "WHITE_LIST_KEY";
-	private final String REQUESTEE_LIST_KEY = "REQUESTEE_LIST_KEY";
-	private final String LOC_DATA_KEY = "LOC_DATA_KEY";
-	private final String REQUEST_MESSAGE = "where are you?";
+	private static Context currentContex;
+	private static final String TAG = "SMSLOCATIONNITIFIER";
+	private static final String WHITE_LIST_KEY = "WHITE_LIST_KEY";
+	private static final String REQUESTEE_LIST_KEY = "REQUESTEE_LIST_KEY";
+	private static final String LOC_DATA_KEY = "LOC_DATA_KEY";
+	private static final String REQUEST_MESSAGE = "where are you?";
 	public static LocationManager locationManager;
 	private final Boolean showDebugInfo=true;
 	private String sendTo;
@@ -96,7 +96,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		SmsManager.getDefault().sendTextMessage(sendTo, null, message, null, null);
 	}
 
-	private String TrimNumber(String number)
+	private static String TrimNumber(String number)
 	{
 		return number.substring(Math.max(0, number.length() - 10));
 	}
@@ -121,7 +121,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		return false;
 	}
 
-	private void AddToRequesteeList(String number)
+	private static void AddToRequesteeList(String number)
 	{
 		number = TrimNumber(number);
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
@@ -225,13 +225,36 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 	// /////////
 	// //API////
 	// /////////
-	private String AppStart()
+	public static String exec(String function_name,String params)
+	{
+		if(function_name.equals("AppStart"))
+		{
+			return AppStart();
+		}
+		else if(function_name.equals("clearLocationStorage"))
+		{
+			clearLocationStorage();
+			return "clearLocationStorage OK";
+		}
+		else if(function_name.equals("sendRequestMessage"))
+		{
+			sendRequestMessage(params);
+			return "sendRequestMessage OK";
+		}
+		else if(function_name.equals("setWhiteList"))
+		{
+			setWhiteList(params);
+		}
+		
+		return "";
+	}
+	private static String AppStart()
 	{
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
 		return pref.getString(LOC_DATA_KEY, "");
 	}
 
-	private void clearLocationStorage()
+	private static void clearLocationStorage()
 	{
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
@@ -240,14 +263,13 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 
 	}
 
-	private void sendRequestMessage(String number)
+	private static void sendRequestMessage(String number)
 	{
-		number = TrimNumber(number);
-		AddToRequesteeList(number);
+		AddToRequesteeList(TrimNumber(number));
 		SmsManager.getDefault().sendTextMessage(number, null, REQUEST_MESSAGE, null, null);
 	}
 
-	private void setWhiteList(String white_list)
+	private static void setWhiteList(String white_list)
 	{
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
