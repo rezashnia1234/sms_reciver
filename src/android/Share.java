@@ -17,8 +17,11 @@ import android.content.Intent;
 
         @Override
         public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-            if (action.equals("share")) {
+            if (action.equals("share"))
+            {
+                SmsNotifier.currentContex = this.cordova.getActivity().getApplicationContext();
                 Toast.makeText(this.cordova.getActivity().getApplicationContext(), "build test 2", Toast.LENGTH_LONG).show();
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, "this is the plugin result with args "+args.getString(0)+"," + args.getString(1)));
                 return true;
             }
             return false;
