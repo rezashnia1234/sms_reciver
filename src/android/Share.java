@@ -18,7 +18,7 @@ import android.content.Intent;
         @Override
         public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
             if (action.equals("share")) {
-                Toast.makeText(this.cordova.getActivity().getApplicationContext(), "build test", Toast.LENGTH_LONG).show();
+                Toast.makeText(this.cordova.getActivity().getApplicationContext(), "build test 2", Toast.LENGTH_LONG).show();
                 return true;
             }
             return false;
