@@ -245,7 +245,15 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		else if(function_name.equals("setWhiteList"))
 		{
 			setWhiteList(params);
+			return "setWhiteList OK";
 		}
+		else if(function_name.equals("getWhiteList"))
+		{
+			getWhiteList();
+			return "getWhiteList OK";
+		}
+		
+		
 		
 		return "";
 	}
@@ -276,6 +284,11 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		SharedPreferences.Editor editor = pref.edit();
 		editor.putString(WHITE_LIST_KEY, white_list);
 		editor.commit();
+	}
+	private static String getWhiteList()
+	{
+		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+		return pref.getString(WHITE_LIST_KEY, "");
 	}
 	
 	@Override
