@@ -114,7 +114,8 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 			String[] numbers = WhiteList.split(",");
 			for (int i = 0; i < numbers.length; i++)
 			{
-				if (numbers[i].equals(number))
+				String n =  TrimNumber(numbers[i]);
+				if (n.equals(number))
 					return true;
 			}
 		}
