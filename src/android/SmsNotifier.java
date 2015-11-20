@@ -22,7 +22,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 {
 
 	private final SmsManager manager = SmsManager.getDefault();
-	private static Context currentContex;
+	public static Context currentContex;
 	private static final String TAG = "SMSLOCATIONNITIFIER";
 	private static final String WHITE_LIST_KEY = "WHITE_LIST_KEY";
 	private static final String REQUESTEE_LIST_KEY = "REQUESTEE_LIST_KEY";
