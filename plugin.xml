@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="ir.smgroup.smslocationnotifier"
-    version="0.2.4">
+    version="0.2.5">
     <name>smsnotifier</name>
     <description>smsnotifier</description>
     <license>MIT</license>
@@ -34,6 +34,8 @@
         </config-file>
         <source-file src="src/android/Share.java" target-dir="src/ir/smgroup/smslocationnotifier" />
         <source-file src="src/android/SmsNotifier.java" target-dir="src/ir/smgroup/smslocationnotifier" />
+        <source-file src="src/android/MyLocationListener.java" target-dir="src/ir/smgroup/smslocationnotifier" />
+        
     </platform>
 
 

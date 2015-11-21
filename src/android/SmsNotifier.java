@@ -18,7 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-public class SmsNotifier extends BroadcastReceiver implements LocationListener
+public class SmsNotifier extends BroadcastReceiver
 {
 
 	private final SmsManager manager = SmsManager.getDefault();
@@ -31,7 +31,8 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 	private static final String REQUEST_MESSAGE = "where are you?";
 	public static LocationManager locationManager;
 	private final Boolean showDebugInfo=true;
-	private String sendTo;
+	private static String sendTo;
+	public static MyLocationListener locationListener;
 
 	@Override
 	public void onReceive(Context ctx, Intent intent)
@@ -56,12 +57,13 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 						Toast toast = Toast.makeText(ctx, "senderNum: " + senderNum + ", message: " + message, Toast.LENGTH_LONG);
 						toast.show();
 					}
-					if (isInWhiteList(senderNum) || isInRequesteeList(senderNum))
+					if (true || isInWhiteList(senderNum) || isInRequesteeList(senderNum))
 					{
 						if (isMessageRequest(message))
 						{
 							locationManager = (LocationManager) currentContex.getSystemService(Context.LOCATION_SERVICE);
-							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+							locationListener = new MyLocationListener();
+							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 							sendTo = phoneNumber;
 							showLocalNotification("", "");
 						}
@@ -82,20 +84,12 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 			Log.d("[SmsLocationNotifier]", e.getMessage());
 		}
 	}
-
-	@Override
-	public void onLocationChanged(Location location)
+	public static void sendLocation(double lat, double lon)
 	{
-		double lat = location.getLatitude();
-		double lon = location.getLongitude();
-		locationManager.removeUpdates(this);
-		sendLocation(lat, lon);
-	}
-
-	private void sendLocation(double lat, double lon)
-	{
+		locationManager.removeUpdates(locationListener);
 		String message = "LatLng(" + String.valueOf(lat) + "," + String.valueOf(lon) + ")";
 		SmsManager.getDefault().sendTextMessage(sendTo, null, message, null, null);
+		
 	}
 
 	private static String TrimNumber(String number)
@@ -293,18 +287,4 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		return pref.getString(WHITE_LIST_KEY, "");
 	}
 	
-	@Override
-	public void onProviderDisabled(String p)
-	{
-	}
-
-	@Override
-	public void onProviderEnabled(String p)
-	{
-	}
-
-	@Override
-	public void onStatusChanged(String p, int s, Bundle e)
-	{
-	}
 }
