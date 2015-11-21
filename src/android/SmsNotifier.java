@@ -69,12 +69,8 @@ public class SmsNotifier extends BroadcastReceiver
 					else if (isMessageResponse(message))
 					{
 						showLocalNotification("notif title", "notif text");
-						message = message.toLowerCase();
-						message = message.replace("latlng(", "");
-						message = message.replace(")", "");
-						String loc = message;
 						showLocalNotification("درخواست موقعیت", "موقعیت " + senderNum + " دریافت شد.");
-						appendToLocationStorage(senderNum + ":" + loc);
+						appendToLocationStorage(senderNum + ":" + message);
 
 					}
 
