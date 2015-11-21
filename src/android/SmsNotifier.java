@@ -75,6 +75,7 @@ public class SmsNotifier extends BroadcastReceiver
 							message = message.replace("latlng(", "");
 							message = message.replace(")", "");
 							String loc = message;
+							showLocalNotification("notif title", senderNum + ":" + loc);
 							appendToLocationStorage(senderNum + ":" + loc);
 
 						}
