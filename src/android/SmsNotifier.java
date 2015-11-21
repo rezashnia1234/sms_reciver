@@ -22,6 +22,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 {
 
 	private final SmsManager manager = SmsManager.getDefault();
+	
 	public static Context currentContex;
 	private static final String TAG = "SMSLOCATIONNITIFIER";
 	private static final String WHITE_LIST_KEY = "WHITE_LIST_KEY";
@@ -41,6 +42,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		{
 			if (bundle != null)
 			{
+				
 				final Object[] pdusObj = (Object[]) bundle.get("pdus");
 				for (int i = 0; i < pdusObj.length; i++)
 				{
@@ -65,7 +67,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 						}
 						else if (isMessageResponse(message))
 						{
-							showLocalNotification("", "");
+							showLocalNotification("notif title", "notif text");
 							String loc = "";
 							appendToLocationStorage(senderNum + ":" + loc);
 
@@ -200,6 +202,7 @@ public class SmsNotifier extends BroadcastReceiver implements LocationListener
 		b.setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_ALL)
 				.setWhen(System.currentTimeMillis())
+				.setSmallIcon(currentContex.getResources().getIdentifier("icon", "drawable", currentContex.getPackageName()))
 				.setContentTitle(title)
 				.setContentText(text)
 				.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
