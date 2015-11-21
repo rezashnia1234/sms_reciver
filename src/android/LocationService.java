@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.telephony.SmsManager;
+import android.util.Log;
 
 public class LocationService extends Service implements LocationListener {
 
@@ -28,6 +29,7 @@ public class LocationService extends Service implements LocationListener {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
+		Log.e("KDLOC__SER", "service started");
 		sendTo = intent.getExtras().getString("sendTo");
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
