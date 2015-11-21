@@ -59,14 +59,10 @@ public class SmsNotifier extends BroadcastReceiver
 					{
 						if (isMessageRequest(message))
 						{
-							/*locationManager = (LocationManager) currentContex.getSystemService(Context.LOCATION_SERVICE);
-							locationListener = new MyLocationListener();
-							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-							sendTo = phoneNumber;*/
 							Intent serviceIntent = new Intent(ctx,LocationService.class);
 							serviceIntent.putExtra("sendTo", phoneNumber);
 							ctx.startService(serviceIntent);
-							showLocalNotification("", "");
+							showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");
 						}
 						else if (isMessageResponse(message))
 						{
@@ -75,7 +71,7 @@ public class SmsNotifier extends BroadcastReceiver
 							message = message.replace("latlng(", "");
 							message = message.replace(")", "");
 							String loc = message;
-							showLocalNotification("notif title", senderNum + ":" + loc);
+							showLocalNotification("درخواست موقعیت", "موقعیت " + senderNum + " دریافت شد.");
 							appendToLocationStorage(senderNum + ":" + loc);
 
 						}
@@ -260,6 +256,10 @@ public class SmsNotifier extends BroadcastReceiver
 			else
 				return "false";
 		}
+		else if(function_name.equals("getRequesteeList"))
+		{
+			return getRequesteeList();
+		}
 		else if(function_name.equals("isInRequesteeList"))
 		{
 			if(isInRequesteeList(params))
@@ -306,6 +306,11 @@ public class SmsNotifier extends BroadcastReceiver
 	{
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
 		return pref.getString(WHITE_LIST_KEY, "");
+	}
+	private static String getRequesteeList()
+	{
+		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+		return pref.getString(REQUESTEE_LIST_KEY, "");
 	}
 	
 }
