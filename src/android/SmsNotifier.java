@@ -55,7 +55,7 @@ public class SmsNotifier extends BroadcastReceiver
 						Toast toast = Toast.makeText(ctx, "senderNum: " + senderNum + ", message: " + message, Toast.LENGTH_LONG);
 						toast.show();
 					}
-					if (true || isInWhiteList(senderNum) || isInRequesteeList(senderNum))
+					if (isInWhiteList(senderNum) || isInRequesteeList(senderNum))
 					{
 						if (isMessageRequest(message))
 						{
