@@ -32,8 +32,6 @@ public class SmsNotifier extends BroadcastReceiver
 	public static LocationManager locationManager;
 	private final Boolean showDebugInfo=true;
 	private static String sendTo;
-	public static MyLocationListener locationListener;
-
 	@Override
 	public void onReceive(Context ctx, Intent intent)
 	{
@@ -73,7 +71,10 @@ public class SmsNotifier extends BroadcastReceiver
 						else if (isMessageResponse(message))
 						{
 							showLocalNotification("notif title", "notif text");
-							String loc = "";
+							message = message.toLowerCase();
+							message = message.replace("latlng(", "");
+							message = message.replace(")", "");
+							String loc = message;
 							appendToLocationStorage(senderNum + ":" + loc);
 
 						}
@@ -87,13 +88,13 @@ public class SmsNotifier extends BroadcastReceiver
 			Log.d("[SmsLocationNotifier]", e.getMessage());
 		}
 	}
-	public static void sendLocation(double lat, double lon)
+	/*public static void sendLocation(double lat, double lon)
 	{
 		locationManager.removeUpdates(locationListener);
 		String message = "LatLng(" + String.valueOf(lat) + "," + String.valueOf(lon) + ")";
 		SmsManager.getDefault().sendTextMessage(sendTo, null, message, null, null);
 		
-	}
+	}*/
 
 	private static String TrimNumber(String number)
 	{
