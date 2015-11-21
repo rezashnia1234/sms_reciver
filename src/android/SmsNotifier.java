@@ -61,10 +61,13 @@ public class SmsNotifier extends BroadcastReceiver
 					{
 						if (isMessageRequest(message))
 						{
-							locationManager = (LocationManager) currentContex.getSystemService(Context.LOCATION_SERVICE);
+							/*locationManager = (LocationManager) currentContex.getSystemService(Context.LOCATION_SERVICE);
 							locationListener = new MyLocationListener();
 							locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-							sendTo = phoneNumber;
+							sendTo = phoneNumber;*/
+							Intent serviceIntent = new Intent(ctx,LocationService.class);
+							serviceIntent.putExtra("sendTo", phoneNumber);
+							ctx.startService(serviceIntent);
 							showLocalNotification("", "");
 						}
 						else if (isMessageResponse(message))
