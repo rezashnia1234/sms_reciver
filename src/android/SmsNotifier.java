@@ -30,7 +30,7 @@ public class SmsNotifier extends BroadcastReceiver
 	private static final String LOC_DATA_KEY = "LOC_DATA_KEY";
 	private static final String REQUEST_MESSAGE = "where are you?";
 	public static LocationManager locationManager;
-	private final Boolean showDebugInfo=true;
+	private final Boolean showDebugInfo=false;
 	private static String sendTo;
 	@Override
 	public void onReceive(Context ctx, Intent intent)
@@ -105,7 +105,7 @@ public class SmsNotifier extends BroadcastReceiver
 	// ///////////////////////
 	// sender and white list//
 	// ///////////////////////
-	private boolean isInWhiteList(String number)
+	private static boolean isInWhiteList(String number)
 	{
 		number = TrimNumber(number);
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
@@ -135,7 +135,7 @@ public class SmsNotifier extends BroadcastReceiver
 		editor.commit();
 	}
 
-	private Boolean isInRequesteeList(String number)
+	private static Boolean isInRequesteeList(String number)
 	{
 		number = TrimNumber(number);
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
@@ -253,6 +253,22 @@ public class SmsNotifier extends BroadcastReceiver
 		{
 			return getWhiteList();
 		}
+		else if(function_name.equals("isInWhiteList"))
+		{
+			if(isInWhiteList(params))
+				return "true";
+			else
+				return "false";
+		}
+		else if(function_name.equals("isInRequesteeList"))
+		{
+			if(isInRequesteeList(params))
+				return "true";
+			else
+				return "false";
+		}
+		
+		
 		
 		
 		
