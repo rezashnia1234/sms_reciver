@@ -64,6 +64,7 @@ public class SmsNotifier extends BroadcastReceiver
 						serviceIntent.putExtra("sendTo", phoneNumber);
 						ctx.startService(serviceIntent);
 						showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");
+						abortBroadcast();
 					}
 					else if (isMessageResponse(message))
 					{
