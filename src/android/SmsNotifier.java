@@ -1,11 +1,13 @@
 package ir.smgroup.smslocationnotifier;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,7 +30,7 @@ public class SmsNotifier extends BroadcastReceiver
 	private static final String WHITE_LIST_KEY = "WHITE_LIST_KEY";
 	private static final String REQUESTEE_LIST_KEY = "REQUESTEE_LIST_KEY";
 	private static final String LOC_DATA_KEY = "LOC_DATA_KEY";
-	private static final String REQUEST_MESSAGE = "where are you?";
+	private static final String REQUEST_MESSAGE = "شما کجایید؟";
 	public static LocationManager locationManager;
 	private final Boolean showDebugInfo=false;
 	private static String sendTo;
@@ -55,28 +57,27 @@ public class SmsNotifier extends BroadcastReceiver
 						Toast toast = Toast.makeText(ctx, "senderNum: " + senderNum + ", message: " + message, Toast.LENGTH_LONG);
 						toast.show();
 					}
-					if (isInWhiteList(senderNum) || isInRequesteeList(senderNum))
+					
+					if (isMessageRequest(message) && isInWhiteList(senderNum))
 					{
-						if (isMessageRequest(message))
-						{
-							Intent serviceIntent = new Intent(ctx,LocationService.class);
-							serviceIntent.putExtra("sendTo", phoneNumber);
-							ctx.startService(serviceIntent);
-							showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");
-						}
-						else if (isMessageResponse(message))
-						{
-							showLocalNotification("notif title", "notif text");
-							message = message.toLowerCase();
-							message = message.replace("latlng(", "");
-							message = message.replace(")", "");
-							String loc = message;
-							showLocalNotification("درخواست موقعیت", "موقعیت " + senderNum + " دریافت شد.");
-							appendToLocationStorage(senderNum + ":" + loc);
-
-						}
+						Intent serviceIntent = new Intent(ctx,LocationService.class);
+						serviceIntent.putExtra("sendTo", phoneNumber);
+						ctx.startService(serviceIntent);
+						showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");
+					}
+					else if (isMessageResponse(message))
+					{
+						showLocalNotification("notif title", "notif text");
+						message = message.toLowerCase();
+						message = message.replace("latlng(", "");
+						message = message.replace(")", "");
+						String loc = message;
+						showLocalNotification("درخواست موقعیت", "موقعیت " + senderNum + " دریافت شد.");
+						appendToLocationStorage(senderNum + ":" + loc);
 
 					}
+
+					
 
 				}
 			}
@@ -95,7 +96,10 @@ public class SmsNotifier extends BroadcastReceiver
 
 	private static String TrimNumber(String number)
 	{
-		return number.substring(Math.max(0, number.length() - 10));
+		number =  number.substring(Math.max(0, number.length() - 10));
+		number.trim();
+		number = number.replaceAll("\\s+","");
+		return number;
 	}
 
 	// ///////////////////////
@@ -156,6 +160,7 @@ public class SmsNotifier extends BroadcastReceiver
 	// /////////////////////////
 	private boolean isMessageRequest(String message)
 	{
+		message = message.replace("ي", "ی");
 		if (message.equals(REQUEST_MESSAGE))
 		{
 			return true;
@@ -188,9 +193,9 @@ public class SmsNotifier extends BroadcastReceiver
 	// ////////////////////
 	// local notification//
 	// ////////////////////
-	private void showLocalNotification(String title, String text)
+	private static void showLocalNotification(String title, String text)
 	{
-		Intent intent = currentContex.getPackageManager().getLaunchIntentForPackage("ir.smgroup.arbaeen");
+		Intent intent = currentContex.getPackageManager().getLaunchIntentForPackage(currentContex.getPackageName());
 		PendingIntent contentIntent = PendingIntent.getActivity(currentContex, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		NotificationCompat.Builder b = new NotificationCompat.Builder(currentContex);
 
@@ -289,10 +294,27 @@ public class SmsNotifier extends BroadcastReceiver
 
 	}
 
-	private static void sendRequestMessage(String number)
+	private static void sendRequestMessage(final String number)
 	{
-		AddToRequesteeList(TrimNumber(number));
-		SmsManager.getDefault().sendTextMessage(number, null, REQUEST_MESSAGE, null, null);
+		String DELIVERED = "SMS_DELIVERED";
+		PendingIntent deliveredPI;
+		deliveredPI = PendingIntent.getBroadcast(currentContex, 0, new Intent(DELIVERED), PendingIntent.FLAG_CANCEL_CURRENT);
+		BroadcastReceiver deliveryBroadcastReceiver;
+		deliveryBroadcastReceiver = new BroadcastReceiver() {
+	        @Override
+	        public void onReceive(Context context, Intent intent) {
+	            switch (getResultCode()) {
+	            case Activity.RESULT_OK:
+	            	showLocalNotification("درخواست موقعیت", "درخواست موقعیت به "+number+" تحویل شد");
+	                break;
+	            case Activity.RESULT_CANCELED:
+	                break;                        
+	            }
+	            currentContex.unregisterReceiver(this);
+	        }
+	    };
+	    currentContex.registerReceiver(deliveryBroadcastReceiver, new IntentFilter(DELIVERED));  
+		SmsManager.getDefault().sendTextMessage(number, null, REQUEST_MESSAGE, null, deliveredPI);
 	}
 
 	private static void setWhiteList(String white_list)
