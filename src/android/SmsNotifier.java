@@ -69,7 +69,7 @@ public class SmsNotifier extends BroadcastReceiver
 					else if (isMessageResponse(message))
 					{
 						showLocalNotification("notif title", "notif text");
-						showLocalNotification("درخواست موقعیت", "موقعیت " + senderNum + " دریافت شد.");
+						showLocalNotification("دریافت موقعیت", "موقعیت " + senderNum + " دریافت شد.");
 						appendToLocationStorage(senderNum + ":" + message);
 
 					}
@@ -158,6 +158,7 @@ public class SmsNotifier extends BroadcastReceiver
 	private boolean isMessageRequest(String message)
 	{
 		message = message.replace("ي", "ی");
+		message = message.replace("ك", "ک");
 		if (message.equals(REQUEST_MESSAGE))
 		{
 			return true;
