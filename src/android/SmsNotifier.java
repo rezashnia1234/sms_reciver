@@ -355,7 +355,9 @@ public class SmsNotifier extends BroadcastReceiver
 	}
 	private static void openGpsSettings()
 	{
-		currentContex.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		Intent i = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		currentContex.startActivity(i);
 	}
 	
 }
