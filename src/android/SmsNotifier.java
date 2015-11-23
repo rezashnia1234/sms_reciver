@@ -270,6 +270,18 @@ public class SmsNotifier extends BroadcastReceiver
 			else
 				return "false";
 		}
+		else if(function_name.equals("isGpsEnabled"))
+		{
+			if(isGpsEnabled())
+				return "true";
+			else
+				return "false";
+		}
+		else if(function_name.equals("openGpsSettings"))
+		{
+			openGpsSettings();
+			return "openGpsSettings OK";
+		}
 		
 		
 		
@@ -331,6 +343,19 @@ public class SmsNotifier extends BroadcastReceiver
 	{
 		SharedPreferences pref = currentContex.getSharedPreferences(TAG, Context.MODE_PRIVATE);
 		return pref.getString(REQUESTEE_LIST_KEY, "");
+	}
+	private static boolean isGpsEnabled()
+	{
+		final LocationManager manager = (LocationManager) currentContex.getSystemService( Context.LOCATION_SERVICE );
+
+    	if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ))
+        	return true;
+        return false;
+
+	}
+	private static void openGpsSettings()
+	{
+		currentContex.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 	}
 	
 }
