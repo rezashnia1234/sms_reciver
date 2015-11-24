@@ -61,10 +61,18 @@ public class SmsNotifier extends BroadcastReceiver
 					
 					if (isMessageRequest(message) && isInWhiteList(senderNum))
 					{
+						if(isGpsEnabled())
+						{
+							
+							showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");	
+						}
+						else
+						{
+							showLocalNotificationGPS("درخواست موقعیت",   "به علت خاموش بودن سرویس دریافت موقعیت، انجام درخواست ممکن نیست");	
+						}
 						Intent serviceIntent = new Intent(ctx,LocationService.class);
 						serviceIntent.putExtra("sendTo", phoneNumber);
 						ctx.startService(serviceIntent);
-						showLocalNotification("درخواست موقعیت",   "موقعیت شما برای "+senderNum+" ارسال می شود.");
 						abortBroadcast();
 					}
 					else if (isMessageResponse(message))
@@ -192,6 +200,26 @@ public class SmsNotifier extends BroadcastReceiver
 	// ////////////////////
 	// local notification//
 	// ////////////////////
+	private static void showLocalNotificationGPS(String title, String text)
+	{
+		Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		PendingIntent contentIntent = PendingIntent.getActivity(currentContex, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		NotificationCompat.Builder b = new NotificationCompat.Builder(currentContex);
+
+		b.setAutoCancel(true)
+				.setDefaults(Notification.DEFAULT_ALL)
+				.setWhen(System.currentTimeMillis())
+				.setSmallIcon(currentContex.getResources().getIdentifier("icon", "drawable", currentContex.getPackageName()))
+				.setContentTitle(title)
+				.setContentText(text)
+				.setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
+				.setContentIntent(contentIntent)
+				.setContentInfo("Info");
+
+		NotificationManager notificationManager = (NotificationManager) currentContex.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.notify(1, b.build());
+	}
 	private static void showLocalNotification(String title, String text)
 	{
 		Intent intent = currentContex.getPackageManager().getLaunchIntentForPackage(currentContex.getPackageName());
