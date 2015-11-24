@@ -282,6 +282,11 @@ public class SmsNotifier extends BroadcastReceiver
 			openGpsSettings();
 			return "openGpsSettings OK";
 		}
+		else if(function_name.equals("openMessageApp"))
+		{
+			openMessageApp(params);
+			return "openMessageApp OK";
+		}
 		
 		
 		
