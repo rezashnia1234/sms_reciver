@@ -369,6 +369,7 @@ public class SmsNotifier extends BroadcastReceiver
 		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 		smsIntent.setType("vnd.android-dir/mms-sms");
 		smsIntent.putExtra("sms_body",message_text);
+		smsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		currentContex.startActivity(smsIntent);
 	}
 	
