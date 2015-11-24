@@ -372,7 +372,7 @@ public class SmsNotifier extends BroadcastReceiver
 		intent2.putExtra(Intent.EXTRA_TEXT, message_text );  
 		Intent chooser =  Intent.createChooser(intent2, "ارسال با");
 		chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		currentContex.startActivity();
+		currentContex.startActivity(chooser);
 	}
 	
 }
