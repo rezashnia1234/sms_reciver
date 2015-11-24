@@ -385,6 +385,8 @@ public class SmsNotifier extends BroadcastReceiver
 		String number = params.substring(0, ind-1);
 		String message = params.substring(ind+1);
 		SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
+		Toast.makeText(ctx, "Num: " + number + ", message: " + message, Toast.LENGTH_LONG).show();
+
 	}
 	
 }
