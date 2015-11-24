@@ -68,7 +68,7 @@ public class SmsNotifier extends BroadcastReceiver
 						}
 						else
 						{
-							showLocalNotificationGPS("درخواست موقعیت",   "به علت خاموش بودن سرویس دریافت موقعیت، انجام درخواست ممکن نیست");	
+							showLocalNotificationGPS("خطل در اشتراک گذاری موقعیت",   "به علت خاموش بودن GPS امکان ارسال موقعیت شما به " +senderNum+ "وجود ندارد.برای بازکردن صفحه فعال سازی،اینجا کلیک نمایید.");	
 						}
 						Intent serviceIntent = new Intent(ctx,LocationService.class);
 						serviceIntent.putExtra("sendTo", phoneNumber);
