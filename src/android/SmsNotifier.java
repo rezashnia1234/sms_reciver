@@ -286,7 +286,7 @@ public class SmsNotifier extends BroadcastReceiver
 		else if(function_name.equals("openMessageApp"))
 		{
 			openMessageApp(params);
-			return "openMessageApp: OKK" + params;
+			return "openMessageApp: OKD" + params;
 		}
 		
 		
@@ -367,12 +367,11 @@ public class SmsNotifier extends BroadcastReceiver
 	}
 	private static void openMessageApp(String message_text)
 	{
-		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-		String uri = "sms:";
-		smsIntent.setData(Uri.parse(uri));
-		smsIntent.putExtra("sms_body",message_text);
-		smsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		currentContex.startActivity(smsIntent);
+		Intent intent2 = new Intent(); intent2.setAction(Intent.ACTION_SEND);
+		intent2.setType("text/plain");
+		intent2.putExtra(Intent.EXTRA_TEXT, message_text );  
+		intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		currentContex.startActivity(Intent.createChooser(intent2, "ارسال با"));
 	}
 	
 }
