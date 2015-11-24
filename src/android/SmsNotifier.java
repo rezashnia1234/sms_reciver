@@ -18,6 +18,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
+import android.net.Uri;
 
 
 public class SmsNotifier extends BroadcastReceiver
