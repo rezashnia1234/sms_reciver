@@ -286,7 +286,12 @@ public class SmsNotifier extends BroadcastReceiver
 		else if(function_name.equals("openMessageApp"))
 		{
 			openMessageApp(params);
-			return "openMessageApp: OKD" + params;
+			return "openMessageApp: OK";
+		}
+		else if(function_name.equals("sendSms"))
+		{
+			sendSms(params);
+			return "sendSms: OK" + params;
 		}
 		
 		
@@ -373,6 +378,13 @@ public class SmsNotifier extends BroadcastReceiver
 		Intent chooser =  Intent.createChooser(intent2, "ارسال با");
 		chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		currentContex.startActivity(chooser);
+	}
+	private static void sendSms(String params)
+	{
+		int ind = params.indexOf(":");
+		String number = params.substring(0, ind-1);
+		String message = params.substring(ind+1);
+		SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
 	}
 	
 }
