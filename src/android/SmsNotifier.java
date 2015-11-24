@@ -285,7 +285,7 @@ public class SmsNotifier extends BroadcastReceiver
 		else if(function_name.equals("openMessageApp"))
 		{
 			openMessageApp(params);
-			return "openMessageApp: OK" + params;
+			return "openMessageApp: OKK" + params;
 		}
 		
 		
@@ -367,9 +367,9 @@ public class SmsNotifier extends BroadcastReceiver
 	private static void openMessageApp(String message_text)
 	{
 		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-		smsIntent.setType("vnd.android-dir/mms-sms");
+		String uri = "sms:";
+		smsIntent.setData(Uri.parse(uri));
 		smsIntent.putExtra("sms_body",message_text);
-		smsIntent.putExtra("address","");         
 		smsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		currentContex.startActivity(smsIntent);
 	}
