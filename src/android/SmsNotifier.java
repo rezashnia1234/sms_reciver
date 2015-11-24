@@ -285,7 +285,7 @@ public class SmsNotifier extends BroadcastReceiver
 		else if(function_name.equals("openMessageApp"))
 		{
 			openMessageApp(params);
-			return "openMessageApp: OK" + params;
+			return "openMessageApp: OKK" + params;
 		}
 		
 		
