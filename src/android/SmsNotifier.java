@@ -382,10 +382,10 @@ public class SmsNotifier extends BroadcastReceiver
 	private static void sendSms(String params)
 	{
 		int ind = params.indexOf(":");
-		String number = params.substring(0, ind-1);
+		String number = params.substring(0, ind);
 		String message = params.substring(ind+1);
 		SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
-		Toast.makeText(currentContex, "Num: " + number + ", message: " + message, Toast.LENGTH_LONG).show();
+		//Toast.makeText(currentContex, "Num: " + number + ", message: " + message, Toast.LENGTH_LONG).show();
 
 	}
 	
