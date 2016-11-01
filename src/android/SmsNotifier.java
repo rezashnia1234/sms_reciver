@@ -13,12 +13,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 import android.net.Uri;
+import android.app.Notification;
 
 
 public class SmsNotifier extends BroadcastReceiver
@@ -205,7 +205,7 @@ public class SmsNotifier extends BroadcastReceiver
 		Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		PendingIntent contentIntent = PendingIntent.getActivity(currentContex, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		NotificationCompat.Builder b = new NotificationCompat.Builder(currentContex);
+		Notification.Builder b = new Notification.Builder(currentContex);
 
 		b.setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_ALL)
@@ -224,7 +224,7 @@ public class SmsNotifier extends BroadcastReceiver
 	{
 		Intent intent = currentContex.getPackageManager().getLaunchIntentForPackage(currentContex.getPackageName());
 		PendingIntent contentIntent = PendingIntent.getActivity(currentContex, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		NotificationCompat.Builder b = new NotificationCompat.Builder(currentContex);
+		Notification.Builder b = new Notification.Builder(currentContex);
 
 		b.setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_ALL)
